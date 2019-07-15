@@ -1,6 +1,3 @@
-const msgInput = document.querySelector('input[name="message"]');
-const button = document.querySelector('#message-sender');
-
 const socket = io('localhost:1337', {
   transportOptions: {
     polling: {
@@ -13,9 +10,6 @@ const socket = io('localhost:1337', {
 
 socket.on('connect', () => {
   console.log(socket.id);
-  button.addEventListener('click', () => {
-    socket.emit('update', 'kjasdlk')
-  });
 });
 
 socket.on('amr', (event) => {

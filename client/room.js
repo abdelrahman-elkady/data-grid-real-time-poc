@@ -1,3 +1,5 @@
+let roomId;
+
 const data = [
   { name: 'Abdelrahman Elkady', a1: 24, a2: 21 },
   { name: 'Amr Saber', a1: 26, a2: 22 },
@@ -20,4 +22,9 @@ const populateTableWithData = () => {
   tableBody.innerHTML = html;
 };
 
-window.addEventListener('load', populateTableWithData);
+const onLoad = () => {
+  populateTableWithData();
+  roomId = [...document.location.search].pop();
+};
+
+window.addEventListener('load', onLoad);

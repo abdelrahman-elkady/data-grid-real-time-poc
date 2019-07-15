@@ -1,5 +1,9 @@
 {
   "extends": "eslint:recommended",
   "env": { "es6": true, "node": true, "browser": true },
-  "globals": {"io": true}
+  "globals": {"io": true},
+  "rules": {
+    "semi": "error",
+    "indent": ["error", 2]
+  }
 }
