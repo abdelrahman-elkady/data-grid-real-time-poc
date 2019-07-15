@@ -1,30 +1,54 @@
 let roomId;
-
-const data = [
-  { name: 'Abdelrahman Elkady', a1: 24, a2: 21 },
-  { name: 'Amr Saber', a1: 26, a2: 22 },
-  { name: 'Khaled Mohamed', a1: 28, a2: 30 },
-];
+let userId;
 
 const tableBody = document.querySelector('#table-body');
 
 const populateTableWithData = () => {
-  const html = data.map(row => {
-    return `
-    <tr>
-      <td data-label="Name">${row.name}</td>
-      <td contenteditable="true" data-label="A1">${row.a1}</td>
-      <td contenteditable="true" data-label="A2">${row.a2}</td>
-    </tr>
-  `;
-  }).join('\n');
+  fetch('http://localhost:1337/data')
+    .then(res => res.json())
+    .then((data) => {
+      const html = data[`r${roomId}`].map(row => {
+        return `
+        <tr>
+          <td data-label="Name">${row.name}</td>
+          <td contenteditable="true" data-label="A1">${row.a1}</td>
+          <td contenteditable="true" data-label="A2">${row.a2}</td>
+        </tr>
+      `;
+      }).join('\n');
 
-  tableBody.innerHTML = html;
+      tableBody.innerHTML = html;
+    });
 };
 
 const onLoad = () => {
+  const params = new URLSearchParams(window.location.search);
+  roomId = params.get('roomId');
+  userId = params.get('userId');
+
   populateTableWithData();
-  roomId = [...document.location.search].pop();
 };
 
 window.addEventListener('load', onLoad);
+
+const socket = io('localhost:1337', {
+  transportOptions: {
+    polling: {
+      extraHeaders: {
+        'x-ws-secret': '1'
+      }
+    }
+  }
+});
+
+socket.on('connect', () => {
+  console.log(socket.id);
+});
+
+socket.on('amr', (event) => {
+  console.log(event);
+});
+
+socket.on('error', (err) => {
+  console.log(err);
+});
