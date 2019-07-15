@@ -8,7 +8,7 @@ const tableBody = document.querySelector("#table-body");
 const currentlyConnectedSpan = document.querySelector("#currently-connected");
 
 const fetchData = () => {
-  return fetch("http://localhost:1337/data")
+  return fetch("/data")
     .then(res => res.json())
     .then(responseBody => {
       data = responseBody[`r${roomId}`];
@@ -39,32 +39,36 @@ const populateTableWithData = () => {
 };
 
 const initSockets = () => {
-  socket = io("localhost:1337", {
-    transportOptions: {
-      polling: {
-        extraHeaders: {
-          "x-ws-secret": "amxrZmRoamxmYXNkbGY",
-          "x-room-id": roomId,
-          "x-user-id": userId
+  return new Promise((resolve, reject) => {
+    socket = io({
+      transportOptions: {
+        polling: {
+          extraHeaders: {
+            "x-ws-secret": "amxrZmRoamxmYXNkbGY",
+            "x-room-id": roomId,
+            "x-user-id": userId
+          }
         }
       }
-    }
-  });
+    });
 
-  socket.on("connect", () => {
-    console.log(socket.id);
-  });
+    socket.on("connect", () => {
+      console.log(socket.id);
+      resolve();
+    });
 
-  socket.on("connected-members-changed", n => {
-    currentlyConnectedSpan.innerHTML = n;
-  });
+    socket.on("connected-members-changed", n => {
+      currentlyConnectedSpan.innerHTML = n;
+    });
 
-  socket.on("error", err => {
-    console.log(err);
-  });
+    socket.on("error", err => {
+      console.log(err);
+      reject();
+    });
 
-  socket.on("cell-updated", ({ cellId, value }) => {
-    document.querySelector(`#c-${cellId}`).innerHTML = value;
+    socket.on("cell-updated", ({ cellId, value }) => {
+      document.querySelector(`#c-${cellId}`).innerHTML = value;
+    });
   });
 };
 
@@ -74,8 +78,9 @@ const onLoad = () => {
   userId = params.get("userId");
 
   fetchData().then(() => {
-    populateTableWithData();
-    initSockets();
+    initSockets()
+      .then(() => populateTableWithData())
+      .catch(() => alert('Unauthorized !'));
   });
 };
 
