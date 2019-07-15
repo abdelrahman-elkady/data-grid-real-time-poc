@@ -1,3 +1,5 @@
+let data;
+
 let roomId;
 let userId;
 
@@ -6,8 +8,10 @@ const tableBody = document.querySelector('#table-body');
 const populateTableWithData = () => {
   fetch('http://localhost:1337/data')
     .then(res => res.json())
-    .then((data) => {
-      const html = data[`r${roomId}`].map(row => {
+    .then((responseBody) => {
+      data = responseBody[`r${roomId}`];
+
+      const html = data.map(row => {
         return `
         <tr>
           <td data-label="Name">${row.name}</td>
