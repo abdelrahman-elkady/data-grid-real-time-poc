@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,12 +10,33 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
   <link rel="stylesheet" href="./main.css">
 </head>
+
 <body>
 
   <div class="ui container centered">
     <div class="ui one column center aligned page grid">
-        <a href="./room.html?roomId=1" class="ui button primary column twelve wide m-b-20" id="room-1">Room 1</a>
-        <a href="./room.html?roomId=2" class="ui button primary column twelve wide m-b-20" id="room-2">Room 2</a>
+
+      <div class="ui form column twelve wide m-b-20">
+        <div class="grouped fields">
+          <label>Select a user</label>
+          <div class="field">
+            <div class="ui radio checkbox">
+              <input type="radio" name="user" checked="checked" value=1>
+              <label>User 1</label>
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="ui radio checkbox">
+              <input type="radio" name="user" value=2>
+              <label>User 2</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <a href="./room.html?roomId=1&userId=1" class="ui button primary column twelve wide m-b-20" id="room-1">Room 1</a>
+      <a href="./room.html?roomId=2&userId=1" class="ui button primary column twelve wide m-b-20" id="room-2">Room 2</a>
     </div>
   </div>
 
@@ -26,4 +48,5 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
   <script src="./main.js"></script>
 </body>
+
 </html>
