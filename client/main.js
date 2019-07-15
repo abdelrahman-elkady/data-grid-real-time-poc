@@ -7,6 +7,6 @@ userInput.forEach(i => {
     const userId = ev.target.value;
 
     roomOneButton.href = roomOneButton.href.replace(/userId=\d/, `userId=${userId}`);
-    roomTwoButton.href = roomOneButton.href.replace(/userId=\d/, `userId=${userId}`);
+    roomTwoButton.href = roomTwoButton.href.replace(/userId=\d/, `userId=${userId}`);
   });
 });
